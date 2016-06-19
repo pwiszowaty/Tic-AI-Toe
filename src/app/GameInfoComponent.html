@@ -1,9 +1,9 @@
 <info *ngIf="gameState.end == 0">
-	Turn {{gameState.turn}}: {{gameState.player.name}} ({{gameState.player.sign}})
+	Turn {{gameState.turn}}: {{currentPlayer.name}} ({{currentPlayer.sign}})
 </info>
 <info *ngIf="gameState.end == 1">
 	<h1>VICTORY!</h1>
-	{{gameState.player.name}} has won in {{gameState.turn}} turns using {{gameState.player.sign}}.
+	{{currentPlayer.name}} has won in turn {{gameState.turn}} using {{currentPlayer.sign}}.
 </info>
 <info *ngIf="gameState.end == -1">
 		Game ended with a tie.

@@ -2,12 +2,16 @@
   <h1>Tic AI Toe</h1>
   <section id="game">
     <row *ngFor="let x of [0, 1, 2]">
-      <tic_ai_input *ngFor="let y of [0, 1, 2]" [x]="x" [y]="y" (actionMade)="changeState($event)" ></tic_ai_input>
+      <tic_ai_input *ngFor="let y of [0, 1, 2]" [x]="x" [y]="y" [sign]="state.fields[x][y]" (actionMade)="changeState($event)" ></tic_ai_input>
     </row>
   </section>
   <section id="feed">
     
   </section>
   
-  <tic_ai_info [gameState]="state"></tic_ai_info>
+  <tic_ai_info [gameState]="state" [currentPlayer]="currentPlayer"></tic_ai_info>
+
+  <section>
+    <button (click)="restartGame()">Restart</button>
+  </section>
 </main>

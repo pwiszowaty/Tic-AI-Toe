@@ -5,22 +5,22 @@ import { Component, EventEmitter } from "@angular/core";
   template: require("./InputComponent.html"),
   styles: [require("./InputComponent.css")],
   outputs: ["actionMade"],
-  inputs: ["x", "y"]
+  inputs: ["x", "y", "sign"]
 })
 
 export default class InputComponent {
   x: Number;
   y: Number;
+  sign: String;
   actionMade = new EventEmitter<any>();
 
-  constructor() {
-  }
-
   clicked(input: any) {
-    this.actionMade.emit({
-      input,
-      x: this.x,
-      y: this.y
-    });
+    if(this.sign === "") {
+      this.actionMade.emit({
+        input,
+        x: this.x,
+        y: this.y
+      });
+    }
   }
 }

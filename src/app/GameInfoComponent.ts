@@ -5,7 +5,7 @@ import GameStateInterface from "./GameStateInterface.ts";
   selector: "tic_ai_info",
   template: require("./GameInfoComponent.html"),
   styles: [require("./GameInfoComponent.css")],
-  inputs: ["gameState"]
+  inputs: ["gameState", "currentPlayer"]
 })
 
 export default class GameInfoComponent {

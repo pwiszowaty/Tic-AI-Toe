@@ -1,10 +1,11 @@
 import GameStateInterface from "../GameStateInterface.ts";
 
-interface Player{
+interface PlayerInterface{
   name: String;
   sign: String;
+  ai: Boolean;
 
   takeTurn(gameState: GameStateInterface): void;
 }
 
-export default Player;
+export default PlayerInterface;

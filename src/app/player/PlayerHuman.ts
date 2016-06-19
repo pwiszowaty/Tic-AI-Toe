@@ -4,6 +4,7 @@ import GameStateInterface from "../GameStateInterface";
 export default class PlayerAI implements PlayerInterface{
   name: String;
   sign: String;
+  ai = false;
 
   constructor(name: String, sign: String) {
     this.name = name;
