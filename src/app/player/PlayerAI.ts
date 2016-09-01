@@ -12,7 +12,7 @@ const availableNatures:any = {
 
 export default class PlayerAI implements PlayerInterface{
   name: String;
-  sign: String;
+  sign: string;
   nature: AINatureInterface;
   ai = true;
 

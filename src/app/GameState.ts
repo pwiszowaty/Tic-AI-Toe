@@ -7,6 +7,7 @@ export default class GameState{
   end: number;
 
   players: Array<PlayerInterface>;
+  signMap: Object;
 
   constructor() {
     this.players = [];
@@ -16,6 +17,7 @@ export default class GameState{
       ["", "", ""],
       ["", "", ""]
     ];
+    this.signMap = {o: 0, x:1};
     this.end = 0; // game not ended
   }
 
@@ -52,6 +54,17 @@ export default class GameState{
     } else {
       this.end = 0; // game not ended
     }
+  }
+
+  // -1: tie, 0: O, 1: X  
+  getWinner(currentSign: string) {
+    let winner = -1;
+
+    if(this.end === 1) {
+      winner = this.signMap[currentSign];
+    }
+
+    return winner;
   }
 
   getGameStatus() {

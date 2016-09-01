@@ -2,17 +2,20 @@ import { Component } from "@angular/core";
 import "../../public/css/styles.css";
 import InputComponent from "./input/InputComponent.ts";
 import GameInfoComponent from "./GameInfoComponent.ts";
+import GameHistory from "./GameHistory.ts";
 
 import GameState from "./GameState.ts";
 import PlayerInterface from "./player/PlayerInterface.ts";
 import PlayerAI from "./player/PlayerAI.ts";
 import PlayerHuman from "./player/PlayerHuman.ts";
+import {Http, Headers, HTTP_PROVIDERS} from '@angular/http';
 
 @Component({
   selector: "tic-ai-toe",
   template: require("./GameComponent.html"),
   styles: [require("./GameComponent.css")],
-  directives: [InputComponent, GameInfoComponent]
+  directives: [InputComponent, GameInfoComponent],
+  viewProviders: [HTTP_PROVIDERS],
 })
 
 export default class GameComponent {
@@ -21,15 +24,14 @@ export default class GameComponent {
   currentPlayer: PlayerInterface;
   db: any;
   dbName: String = 'moves';
+  errorMessage: String;
+  gameHistory: GameHistory;
 
-  constructor() {
+  constructor(public http: Http) {
     let turn = 1;
-    let fdb: any = new ForerunnerDB();
 
+    this.gameHistory = new GameHistory();
     this.resetData();
-
-		this.db = fdb.db('tic-ai-toe');
-		this.db.collection(this.dbName).load();
   }
 
   resetData() {
@@ -52,6 +54,9 @@ export default class GameComponent {
     this.state.applyPlayerMove(event.x, event.y);
     this.state.updateGameStatus();
 
+    //add state to the game history 
+    this.gameHistory.addState(this.state);
+
     // if we're still playing - it's next players move
     if(this.state.getGameStatus() === 0) {
       this.state.nextTurn();
@@ -62,6 +67,9 @@ export default class GameComponent {
           this.changeState(this.currentPlayer.takeTurn(this.state));
         }, 1000)
       }
+    } else {
+      //save the result
+      this.save();
     }
 
     // save state
@@ -75,4 +83,21 @@ export default class GameComponent {
     // forerunner to persist the data
     // this.db.collection(this.dbName).save();
   }
+
+	save() {
+		let headers = new Headers();
+    const states = this.gameHistory.getFinalScore(this.state.getWinner(this.currentPlayer.sign));
+		
+    headers.append('Content-Type', 'application/json');
+
+    console.log('uwaga, sejwuję!');
+    console.log(JSON.stringify({states}));
+
+		this.http.post('http://localhost:1337/game/save', JSON.stringify({states}), {headers})
+    .subscribe(
+      data => console.log('data recieved: ' + data),
+      error =>  this.errorMessage = <any>error,
+      () => console.log('Saved! ' + this.errorMessage)
+    );
+	}
 }
